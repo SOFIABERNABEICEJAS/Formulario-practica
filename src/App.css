@@ -18,3 +18,11 @@ input {
 	padding: 50px;
 	width: 350px;
 }
+
+.input {
+	background-color: blueviolet;
+}
+
+.rojo {
+	background-color: rgb(224, 73, 73);
+}

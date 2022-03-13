@@ -2,24 +2,35 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
+	//initialState
 	const estadoInicial = { nombre: "", edad: "", genero: "", provincia: "" };
 
 	const [datosFormulario, setDatosFormulrio] = useState(estadoInicial);
-	const [errores, setErrores] = useState(estadoInicial);
+	const [errors, setErrors] = useState({ estadoInicial });
 
 	const handleChange = (e) => {
 		const valorImput = e.target.value;
 		const nombreDelInput = e.target.name;
-
 		setDatosFormulrio({
 			...datosFormulario,
 			[nombreDelInput]: valorImput,
 			//[e.target.value]: e.target.name
 		});
 	};
+
 	const handleSubmit = (e) => {
 		e.preventDesault();
+
+		//clase 117
+		let errores = { ...estadoInicial };
+		Object.keys(datosFormulario).map((key) => {
+			if (datosFormulario[key] == "") {
+				errores = { ...errores, [key]: `El campo ${key} no puede estar vacio` };
+			}
+		});
+		setErrors({ ...errores });
 	};
+
 	return (
 		<div className="App">
 			<form onSubmit={handleSubmit}>
@@ -27,15 +38,18 @@ function App() {
 				<label>
 					Nombre
 					<input
+						className={errors.nombre ? "rojo" : "input"}
 						type="text"
 						name="nombre"
 						value={datosFormulario.nombre}
 						onChange={handleChange}
 					></input>
+					{errors.nombre && <h4>{errors.nombre} </h4>}
 				</label>
 				<label>
 					Edad
 					<input
+						className={errors.edad ? "rojo" : "input"}
 						type="number"
 						name="edad"
 						value={datosFormulario.edad}
@@ -43,7 +57,7 @@ function App() {
 					></input>
 				</label>
 				<label>
-					Genero:
+					<p className={errors.genero ? "rojo" : "input"}>Genero</p>
 					<p>Indistinto</p>
 					<input
 						type="radio"
@@ -72,6 +86,7 @@ function App() {
 				<label>
 					Provincia:
 					<select
+						className={errors.provincia ? "rojo" : "input"}
 						name="provincia"
 						valua={datosFormulario.provincia}
 						onChange={handleChange}
@@ -81,10 +96,20 @@ function App() {
 						<option value="cbs">Cordoba</option>
 					</select>
 				</label>
-				<input type="submit" value="enviar" />
+				<input type="submit" value="Enviar" />
 			</form>
 		</div>
 	);
 }
 
 export default App;
+
+// Clase 17.
+//Objet.keys (saca la clave del objeto, es decir, nombre,edad, provincia)
+//Objet.value(saca el valor del objeto, es decir, sofia, 28, cordoba)
+//Ponemos en un map.
+
+//comportamientp puede ocurrir cuando aprienta enviar sino cuando sale de foco
+
+//en el estado de error podemos chequemos muchas cosas. Entonces
+// Objets.keys pasa a array y seria un for adentro de otro for
